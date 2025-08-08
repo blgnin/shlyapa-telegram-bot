@@ -1,5 +1,5 @@
 FROM python:3.11-slim
-# Force rebuild - cache bust
+# Force rebuild v2 - 2025-08-08-11:50
 
 # Устанавливаем рабочую директорию
 WORKDIR /app
