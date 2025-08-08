@@ -422,8 +422,12 @@ class UserBotManager:
                     await self.client2.send_message(event.chat_id, response, reply_to=event.message.id)
                     logger.info(f"✅ {BOT2_NAME} отправил ОДИН ответ через client2")
                 elif bot_name == BOT3_NAME:  # Алевтина
-                    await self.client3.send_message(event.chat_id, response, reply_to=event.message.id)
-                    logger.info(f"✅ {BOT3_NAME} отправила ОДИН ответ через client3")
+                    try:
+                        await self.client3.send_message(event.chat_id, response, reply_to=event.message.id)
+                        logger.info(f"✅ {BOT3_NAME} отправила ОДИН ответ через client3")
+                    except Exception as client3_error:
+                        logger.error(f"❌ Ошибка отправки через client3 для {BOT3_NAME}: {client3_error}")
+                        raise
                 else:
                     logger.error(f"❌ Неизвестный бот: '{bot_name}'. Доступные: '{BOT1_NAME}', '{BOT2_NAME}', '{BOT3_NAME}'")
                     raise ValueError(f"Неизвестный бот: {bot_name}")
