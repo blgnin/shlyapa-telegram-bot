@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 async def main():
     """Главная функция для запуска юзер-ботов на Render.com"""
     try:
-        logger.info("🚀 Запуск системы юзер-ботов на Render.com v3 - FIXED...")
+                    logger.info("🚀 Запуск системы юзер-ботов на Render.com v4 - PROMPT FIXED...")
         
         # Проверяем переменные окружения
         required_vars = ['BOT1_TOKEN', 'BOT2_TOKEN', 'BOT3_TOKEN', 'OPENAI_API_KEY', 'CHAT_ID']
