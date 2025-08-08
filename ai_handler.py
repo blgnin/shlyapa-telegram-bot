@@ -9,8 +9,13 @@ from natural_speech_handler import NaturalSpeechHandler
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Инициализация OpenAI (новый API)
-client = OpenAI(api_key=OPENAI_API_KEY)
+# Инициализация OpenAI (новый API) - безопасная инициализация
+try:
+    client = OpenAI(api_key=OPENAI_API_KEY)
+    logger.info("✅ OpenAI клиент инициализирован успешно")
+except Exception as e:
+    logger.error(f"❌ Ошибка инициализации OpenAI: {e}")
+    client = None
 
 # Инициализация обработчика естественной речи
 natural_speech = NaturalSpeechHandler()
@@ -37,7 +42,10 @@ class AIHandler:
 Ответ должен быть коротким (1-2 предложения).
 """
             
-            response = client.chat.completions.create(
+                   if client is None:
+                       return "OpenAI недоступен 🤖"
+                   
+                   response = client.chat.completions.create(
                 model=AI_MODEL,
                 messages=[
                     {"role": "system", "content": full_prompt},
