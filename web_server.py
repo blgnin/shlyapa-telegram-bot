@@ -1,57 +1,45 @@
 """
-Простой веб-сервер для Render.com
+Простой веб-сервер для Fly.io
 Работает параллельно с Telegram ботами
 """
-from http.server import HTTPServer, BaseHTTPRequestHandler
-import threading
-import json
+import asyncio
+from aiohttp import web
 import os
+import logging
 
-class HealthHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        if self.path == '/':
-            self.send_response(200)
-            self.send_header('Content-type', 'application/json')
-            self.end_headers()
-            
-            status = {
-                "status": "✅ Telegram Userbot System работает!",
-                "service": "shlyapa-bot",
-                "bots": ["Daniel", "Leonardo", "Alevtina"],
-                "environment": "Render.com Production"
-            }
-            
-            self.wfile.write(json.dumps(status, ensure_ascii=False).encode('utf-8'))
-            
-        elif self.path == '/health':
-            self.send_response(200)
-            self.send_header('Content-type', 'text/plain')
-            self.end_headers()
-            self.wfile.write(b'OK')
-            
-        else:
-            self.send_response(404)
-            self.end_headers()
-            self.wfile.write(b'Not Found')
-    
-    def log_message(self, format, *args):
-        # Отключаем логи HTTP запросов
-        pass
+logger = logging.getLogger(__name__)
+
+async def handle_root(request):
+    """Обработчик для корневого URL."""
+    logger.info("Received request for /")
+    status = {
+        "status": "✅ Telegram Userbot System работает!",
+        "service": "shlyapa-bot",
+        "bots": ["Daniel", "Leonardo", "Alevtina"],
+        "environment": "Fly.io Production"
+    }
+    return web.json_response(status)
+
+async def handle_health(request):
+    """Обработчик для проверки здоровья."""
+    logger.info("Received request for /health")
+    return web.Response(text="OK")
 
 def start_web_server():
-    """Запускает веб-сервер в отдельном потоке"""
-    port = int(os.environ.get('PORT', 10000))
+    """Запускает веб-сервер в отдельной задаче."""
+    app = web.Application()
+    app.router.add_get('/', handle_root)
+    app.router.add_get('/health', handle_health)
     
-    server = HTTPServer(('0.0.0.0', port), HealthHandler)
-    print(f"🌐 Веб-сервер запущен на порту {port}")
-    print(f"🔗 Доступен по адресу: http://0.0.0.0:{port}")
+    port = int(os.environ.get("PORT", 8000))
+    logger.info(f"Starting web server on port {port}")
     
-    # Запускаем сервер в отдельном потоке
-    server_thread = threading.Thread(target=server.serve_forever)
-    server_thread.daemon = True
-    server_thread.start()
-    
-    return server
+    runner = web.AppRunner(app)
+    asyncio.create_task(runner.setup())
+    site = web.TCPSite(runner, '0.0.0.0', port)
+    asyncio.create_task(site.start())
+    logger.info(f"Web server started on http://0.0.0.0:{port}")
+    return runner
 
 if __name__ == "__main__":
     start_web_server()
