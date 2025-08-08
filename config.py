@@ -18,6 +18,7 @@ else:
 BOT1_TOKEN = os.getenv('BOT1_TOKEN', 'your_phone1_here')
 BOT2_TOKEN = os.getenv('BOT2_TOKEN', 'your_phone2_here')
 BOT3_TOKEN = os.getenv('BOT3_TOKEN', '+38268207785')
+BOT4_TOKEN = os.getenv('BOT4_TOKEN', 'claude_bot_token')  # Claude bot
 
 # Отладочная информация
 print(f"🔍 Загруженные номера телефонов:")
