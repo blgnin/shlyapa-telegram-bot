@@ -1,5 +1,5 @@
 FROM python:3.11-slim
-# Force rebuild v2 - 2025-08-08-11:50
+# Force rebuild v3 - 2025-08-08-14:05 - FINAL
 
 # Устанавливаем рабочую директорию
 WORKDIR /app

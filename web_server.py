@@ -25,8 +25,8 @@ async def handle_health(request):
     logger.info("Received request for /health")
     return web.Response(text="OK")
 
-def start_web_server():
-    """Запускает веб-сервер в отдельной задаче."""
+async def start_web_server():
+    """Запускает веб-сервер правильно для asyncio."""
     app = web.Application()
     app.router.add_get('/', handle_root)
     app.router.add_get('/health', handle_health)
@@ -35,9 +35,9 @@ def start_web_server():
     logger.info(f"Starting web server on port {port}")
     
     runner = web.AppRunner(app)
-    asyncio.create_task(runner.setup())
+    await runner.setup()
     site = web.TCPSite(runner, '0.0.0.0', port)
-    asyncio.create_task(site.start())
+    await site.start()
     logger.info(f"Web server started on http://0.0.0.0:{port}")
     return runner
 

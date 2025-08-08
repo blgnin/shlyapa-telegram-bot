@@ -1,4 +1,4 @@
-import openai
+from openai import OpenAI
 import random
 import json
 import logging
@@ -9,8 +9,8 @@ from natural_speech_handler import NaturalSpeechHandler
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Инициализация OpenAI
-openai.api_key = OPENAI_API_KEY
+# Инициализация OpenAI (новый API)
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 # Инициализация обработчика естественной речи
 natural_speech = NaturalSpeechHandler()
@@ -37,7 +37,7 @@ class AIHandler:
 Ответ должен быть коротким (1-2 предложения).
 """
             
-            response = openai.ChatCompletion.create(
+            response = client.chat.completions.create(
                 model=AI_MODEL,
                 messages=[
                     {"role": "system", "content": full_prompt},
