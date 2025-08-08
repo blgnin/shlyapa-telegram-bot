@@ -77,7 +77,6 @@ class UserBotManager:
             logger.info("🎬 Активируем систему юзер-ботов...")
             self.conversation_active = True
             self.current_speaker = BOT1_NAME
-            self.ai_handler.clear_history()
             self.conversation_history = []  # Очищаем историю диалога
             self.message_counters = {BOT1_NAME: 0, BOT2_NAME: 0}  # Сбрасываем счетчики
             self.message_queue = {BOT1_NAME: [], BOT2_NAME: []}  # Очищаем очереди сообщений
@@ -399,7 +398,7 @@ class UserBotManager:
                 
                 # Генерируем уникальный ответ на сообщение пользователя
                 logger.info(f"🤖 Генерируем ответ для бота: '{bot_name}' (тип: {type(bot_name)})")
-                response = await self.ai_handler.generate_response(message_text, bot_name, context, counter)
+                response = await self.ai_handler.generate_response(message_text, bot_name, context)
                 logger.info(f"✅ Ответ сгенерирован: {response[:50]}...")
                 
                 # Добавляем ответ бота в историю
@@ -544,7 +543,7 @@ class UserBotManager:
 - Каждый ответ должен быть УНИКАЛЬНЫМ"""
             
             counter = self._safe_increment_counter(bot_name)
-            response = await self.ai_handler.generate_response(message_text, bot_name, context, counter)
+            response = await self.ai_handler.generate_response(message_text, bot_name, context)
             
             self.conversation_history.append({
                 'sender': bot_name,
@@ -657,7 +656,7 @@ class UserBotManager:
 - Каждый ответ должен быть УНИКАЛЬНЫМ"""
             
             counter = self._safe_increment_counter(bot_name)
-            response = await self.ai_handler.generate_response(message_text, bot_name, context, counter)
+            response = await self.ai_handler.generate_response(message_text, bot_name, context)
             
             self.conversation_history.append({
                 'sender': bot_name,
