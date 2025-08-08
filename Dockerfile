@@ -26,5 +26,5 @@ ENV PORT=8000
 # Открываем порт
 EXPOSE 8000
 
-# Команда запуска (временно тест)
-CMD ["python", "-u", "test_minimal.py"]
+# Команда запуска
+CMD ["python", "-u", "main.py"]
