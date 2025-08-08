@@ -41,11 +41,11 @@ class AIHandler:
 Отвечай естественно, как живой человек. Используй эмоции, сленг, сокращения.
 Ответ должен быть коротким (1-2 предложения).
 """
-                   
-                   if client is None:
-                       return "OpenAI недоступен 🤖"
-                   
-                   response = client.chat.completions.create(
+            
+            if client is None:
+                return "OpenAI недоступен 🤖"
+            
+            response = client.chat.completions.create(
                 model=AI_MODEL,
                 messages=[
                     {"role": "system", "content": full_prompt},
