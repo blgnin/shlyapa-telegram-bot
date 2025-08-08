@@ -399,7 +399,7 @@ class UserBotManager:
                 
                 # Генерируем уникальный ответ на сообщение пользователя
                 logger.info(f"🤖 Генерируем ответ для бота: '{bot_name}' (тип: {type(bot_name)})")
-                response = await self.ai_handler.generate_response(prompt, bot_name, context)
+                response = await self.ai_handler.generate_response(message_text, bot_name, context)
                 logger.info(f"✅ Ответ сгенерирован: {response[:50]}...")
                 
                 # Добавляем ответ бота в историю
@@ -539,7 +539,7 @@ class UserBotManager:
 - Каждый ответ должен быть УНИКАЛЬНЫМ"""
             
             counter = self._safe_increment_counter(bot_name)
-            response = await self.ai_handler.generate_response(prompt, bot_name, context)
+            response = await self.ai_handler.generate_response(message_text, bot_name, context)
             
             self.conversation_history.append({
                 'sender': bot_name,
@@ -652,7 +652,7 @@ class UserBotManager:
 - Каждый ответ должен быть УНИКАЛЬНЫМ"""
             
             counter = self._safe_increment_counter(bot_name)
-            response = await self.ai_handler.generate_response(prompt, bot_name, context)
+            response = await self.ai_handler.generate_response(message_text, bot_name, context)
             
             self.conversation_history.append({
                 'sender': bot_name,
