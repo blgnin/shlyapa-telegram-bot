@@ -77,7 +77,7 @@ class UserBotManager:
             logger.info("🎬 Активируем систему юзер-ботов...")
             self.conversation_active = True
             self.current_speaker = BOT1_NAME
-            # История очищается автоматически в AIHandler
+            self.ai_handler.clear_history()
             self.conversation_history = []  # Очищаем историю диалога
             self.message_counters = {BOT1_NAME: 0, BOT2_NAME: 0}  # Сбрасываем счетчики
             self.message_queue = {BOT1_NAME: [], BOT2_NAME: []}  # Очищаем очереди сообщений
@@ -399,7 +399,7 @@ class UserBotManager:
                 
                 # Генерируем уникальный ответ на сообщение пользователя
                 logger.info(f"🤖 Генерируем ответ для бота: '{bot_name}' (тип: {type(bot_name)})")
-                response = await self.ai_handler.generate_response(message_text, bot_name, context)
+                response = await self.ai_handler.generate_response(message_text, bot_name, context, counter)
                 logger.info(f"✅ Ответ сгенерирован: {response[:50]}...")
                 
                 # Добавляем ответ бота в историю
@@ -423,10 +423,11 @@ class UserBotManager:
                     logger.info(f"✅ {BOT2_NAME} отправил ОДИН ответ через client2")
                 elif bot_name == BOT3_NAME:  # Алевтина
                     try:
+                        logger.info(f"🔄 {BOT3_NAME} пытается отправить сообщение через client3...")
                         await self.client3.send_message(event.chat_id, response, reply_to=event.message.id)
                         logger.info(f"✅ {BOT3_NAME} отправила ОДИН ответ через client3")
                     except Exception as client3_error:
-                        logger.error(f"❌ Ошибка отправки через client3 для {BOT3_NAME}: {client3_error}")
+                        logger.error(f"❌ ДЕТАЛЬНАЯ ОШИБКА client3 для {BOT3_NAME}: {type(client3_error).__name__}: {client3_error}")
                         raise
                 else:
                     logger.error(f"❌ Неизвестный бот: '{bot_name}'. Доступные: '{BOT1_NAME}', '{BOT2_NAME}', '{BOT3_NAME}'")
@@ -543,7 +544,7 @@ class UserBotManager:
 - Каждый ответ должен быть УНИКАЛЬНЫМ"""
             
             counter = self._safe_increment_counter(bot_name)
-            response = await self.ai_handler.generate_response(message_text, bot_name, context)
+            response = await self.ai_handler.generate_response(message_text, bot_name, context, counter)
             
             self.conversation_history.append({
                 'sender': bot_name,
@@ -656,7 +657,7 @@ class UserBotManager:
 - Каждый ответ должен быть УНИКАЛЬНЫМ"""
             
             counter = self._safe_increment_counter(bot_name)
-            response = await self.ai_handler.generate_response(message_text, bot_name, context)
+            response = await self.ai_handler.generate_response(message_text, bot_name, context, counter)
             
             self.conversation_history.append({
                 'sender': bot_name,
