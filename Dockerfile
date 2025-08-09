@@ -1,6 +1,4 @@
 FROM python:3.11-slim
-# NUCLEAR REBUILD v4 - 2025-08-08-14:15 - DELETE ALL CACHE
-# Force complete rebuild - no cache allowed
 
 # Устанавливаем рабочую директорию
 WORKDIR /app
@@ -27,5 +25,5 @@ ENV PORT=8000
 # Открываем порт
 EXPOSE 8000
 
-# Команда запуска
-CMD ["python", "-u", "main.py"]
+# Команда запуска (включает веб-сервер и юзер-ботов)
+CMD ["python", "-u", "main_render.py"]
