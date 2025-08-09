@@ -103,4 +103,4 @@ logs/
 # Local development
 local_config.py
 test_*.py
-debug_*.py
+debug_*.py*.session
